@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前后端交互模式、promise</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- 前后端交互，接口调用哪些，有fetch\axios\asyns\await接口 -->
+    <!-- 前后端交互模式：拿去后端的数据，前端这边用接口调用接收
+        接口调用方式：1.原生ajax 2.基于jQuery的ajax  3.fetch  4.axios
+        URL地址格式：传统格式:https://www.baidu.com;  Restful格式：这里面就用HTTP请求方式：GET\POST\PUT\DELETE  (跟传统地址的格式差不多但是所产生的效果不同)；传参数方式不同
+        promise 是es6的新增语法，属于异步操作
+        异步调用：定时任务、AJAX、事件函数
+    -->
+    <!-- 多次异步调用的依赖，分为有依赖和没有依赖
+        没有依赖：结果顺序不确定，
+        有依赖：要是想要规定顺序，则通过嵌套-函数回调的形式执行，这种返回也会造成回调地狱-可读性不强。例如：
+        $ajax({
+            success:function(data){
+                if(data.status == 200){
+                    $ajax({
+                        success:function(data){
+                            if(data.status == 200){
+                                  $ajax({
+                                     success:function(data){
+                                        if(data.status == 200){}
+                                     }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    
+    -->
+    <!-- promise概述：解决异步编程，也是一个对象； 好处：避免回调地狱->有了then回调函数去处理；简洁的API，控制异步操作跟容易-->
+    <!-- 基本用法：
+        1.实例化——>构造函数中传递函数（该函数用于处理异步任务），参数是reslove\reject，并通过p.then获取处理的结果
+        var p = new Promise(function(resolve,reject){
+            成功调用resolve
+            失败调用reject
+        });
+        p.then(function(ret){
+            从resolve得到正常的结果
+        },function(ret){
+            从reject得到错误的信息
+        });
+     -->
+
+
+    <div id="app">
+    </div>
+
+
+    <!-- 引入vue.js库文件 -->
+    <script type="text/javascript" src="../JS/vue.js"></script>
+    <script type="text/javascript">
+        // promise基本使用
+        // functios，函数也是属于对象
+        // console.log(typeof Promise);
+        // console.dir()
+
+        var p = new Promise(function (resolve, reject) {
+            // 这里用与实现异步任务
+            // resolve,reject这两个都是方法可以调用
+            setTimeout(function () {
+                var flag = true;
+                if (flag) {
+                    // 成功调用resolve
+                    resolve('hi')
+                } else {
+                    // 失败调用reject
+                    reject('error')
+                }
+            }, 1000)
+        });
+        p.then(function (data) {
+            // data得到的是resolve('hi')的hi
+            // 从resolve得到正常的结果
+            console.log(data);
+        }, function (info) {
+            // info得到的是reject('error')
+            // 从reject得到错误的信息
+            console.log(info);
+        });
+    </script>
+</body>
+
+</html>

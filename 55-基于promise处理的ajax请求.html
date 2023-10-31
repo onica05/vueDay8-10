@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于promise处理的ajax请求</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- 基本用法：
+        1.实例化——>构造函数中传递函数（该函数用于处理异步任务），参数是reslove\reject，并通过p.then获取处理的结果
+        var p = new Promise(function(resolve,reject){
+            成功调用resolve
+            失败调用reject
+        });
+        p.then(function(ret){
+            从resolve得到正常的结果
+        },function(ret){
+            从reject得到错误的信息
+        });
+     -->
+
+    <!--基于promise处理的ajax请求:
+        function queryData(){
+            return new Promise(function(resolve,reject){
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function(){
+                    if(xhr.readystate !=4 ) return;
+                    if(xhr.status == 200 ){
+                        resolve(xhr.responseText)
+                    } else {
+                        reject('出错了')
+                    }
+                }
+                xhr.open('get', '/data');
+                xhr.send(null)
+            })
+        }
+      -->
+
+      <!-- 发送多次ajax请求--回调地狱，利用then 进行链式操作
+        queryData()
+           .then(function (data) {
+            return queryData();
+           })
+           .then(function (data) {
+            return queryData();
+           })
+           .then(function (data) {
+            return queryData();
+           });
+            
+           在多个then的时候，最终只会输出最后一个then所return的东西
+    -->
+    <!-- then其实也是函数，对于其中的返回值有两种情况：
+        1.返回promise实例对象，该实例对象会调用下一个then　  
+        2.返回普通值，这个值直接传递给then，通过这个then会参数一个默认的promise从而去调用下一 
+     -->
+
+
+    <!-- 引入vue.js库文件 -->
+    <script type="text/javascript" src="../JS/vue.js"></script>
+    <script type="text/javascript">
+        // 基于promise处理的ajax请求:
+        // function queryData() {
+        //     var p = new Promise(function (resolve, reject) {
+        //         var xhr = new XMLHttpRequest();
+        //         xhr.onreadystatechange = function () {
+        //             if (xhr.readystate != 4) return;
+        //             if (xhr.readystate == 4 && xhr.status == 200) {
+        //                 resolve(xhr.responseText)
+        //             } else {
+        //                 reject('出错了')
+        //             }
+        //         }
+        //         xhr.open('get', '/data');
+        //         xhr.send(null)
+        //     });
+        //     return p;
+        // }
+        // queryData('')
+        //     .then(function (data) {
+        //         console.log(data);
+        //     }, function (info) {
+        //         console.log(info);
+
+        //     }
+        //     )
+    </script>
+</body>
+
+</html>

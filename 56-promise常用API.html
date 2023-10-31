@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promise常用API</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- 基本用法：
+        1.实例方法——>构造函数中传递函数（该函数用于处理异步任务），参数是reslove\reject，并通过p.then获取处理的结果
+        var p = new Promise(function(resolve,reject){
+            成功调用resolve
+            失败调用reject
+        });
+        p.then(function(ret){
+            从resolve得到正常的结果
+        },function(ret){
+            从reject得到错误的信息
+        });
+     -->
+     <!-- Api:
+        1.实例方法（都在prototype里面）：then--得异步任务的正确结果； catch()---获取异常信息；  finally()成功与否都会执行
+        queryData()
+         .then(function(data){
+            console.log(data)
+         })
+         .catch(function(data){
+            console.log(data)
+
+         })
+         .finally(function(){
+            console.log('finished')
+
+         });
+
+
+        2.对象方法，利用函数名称调用
+        这两个的参数都是数组，里面的都是一系列的promise实例对象
+        Promise.all() 并发处理多个异步任务，所有任务都执行完毕才能得到结果
+        Promise.all([p1, p2, p3]).then((reslut) =>{
+            console.log(reslut)
+            这个结果是以数组形式呈现的，顺序是以传参数的顺序出来的
+        })
+
+
+        Promise.race()  并发处理多个异步任务，只要有一个执行完毕就可以得到结果
+        Promise.race([p1, p2, p3]).then((reslut) =>{
+            console.log(reslut)
+            这个结果只会呈现最先返回的结果，其他的后面返回的不会呈现，但是是得到了的
+        })
+
+     -->
+
+   
+
+    <!-- 引入vue.js库文件 -->
+    <script type="text/javascript" src="../JS/vue.js"></script>
+    <script type="text/javascript">
+        function queryData(){
+            return new Promise(function(resolve,reject){
+                setTimeout(function(){
+                    resolve(123)
+                    // reject('error')
+                }, 1000)
+            })
+        }
+        queryData()
+         .then(function(data){
+            // 得到异步任务的结果
+            console.log(data)
+         })
+         .catch(function(data){
+            // 获取异常
+            console.log(data)
+
+         })
+         .finally(function(){
+            // 无论成功与否都会执行
+            console.log('finished')
+
+         });
+
+        // 这是将两个函数都传递给then,也可以向上面一样成功 失败分开传递
+        //  .then(function (data) {
+        //     // data得到的是resolve('hi')的hi
+        //     // 从resolve得到正常的结果
+        //     console.log(data);
+        // }, function (info) {
+        //     // info得到的是reject('error')
+        //     // 从reject得到错误的信息
+        //     console.log(info);
+        // })
+        // .finally(function(){
+        //     console.log('finished');
+        // })
+
+    </script>
+</body>
+
+</html>

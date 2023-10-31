@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>axios常用API</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- 概述 ：基本特性：1.是第三方的资源库(使用的时候要引入,也可以之间npm install axios) 2.是一个基于Promise用于浏览器和node.js的HTTP的客户端-->
+    <!-- 特征:1.支持浏览器和node.js
+        2.支持promise
+        3.能拦截请求和响应
+        4.自动转换JSON数据
+     -->
+    <!-- 语法结构：
+       
+     -->
+    <!-- 基本用法：
+        axios.get('/adata')
+             .then(ret => {
+                data属性名称是固定的,用于获取后台响应的数据
+                console.log(ret.data)
+             })
+     -->
+    <!-- 参数传递-----常用API:
+        API里面其实也就有put\post\delete\get,  只是axios封装成了API,更加方便;
+        get,delete方式参数传递:1.通过URL传递参数  2.通过params选项传递参数
+        axios.get('/adata?id=123')
+             .then(ret =>{
+                console.log(ret.data)
+             })
+         axios.delete('/adata?id=123')
+             .then(ret =>{
+                console.log(ret.data)
+             })
+
+        put,post传递参数---默认传递的是json格式的数据
+        axios.post('/adata', {
+            uname:'tom',
+            pwd:124
+        }).then(ret => {
+            console.log(ret.data)
+        })
+        post传递参数---表单形式;通过URLSearchParams传递参数(application/x-www-form-urlencoded)
+        const params = new URLSearchParams();
+        params.appead('param1', 'value1');
+        params.appead('param2', 'value2');
+        axios.post('/api/test', params).then(ret => {
+            console.log(ret.data)
+        })
+     -->
+
+    <!-- 响应结果 :
+       主要属性:
+       data:实际响应回来的数据
+       headers:响应头信息
+       status:响应状态码
+       statusText:响应状态信息
+    -->
+    <!-- 全局配置:
+        axios.defaults.timeout = 3000;   超时时间;
+        axios.defaults.baseURL = 'http://locahost:3000/app'  自己向先把地址写出来,之后用的时候直接添加具体的路径
+        axios.defaults.headers['mytoken'] = ''   设置请求头
+     -->
+    <!-- 拦截器：
+        1.请求拦截器
+        添加一个请求拦截器
+        axios.interceptors.request.use(function(config){
+            在请求发出之前进行一些消息配置
+            return config
+        },funcrion(err){
+            处理响应的错误消息
+        });
+        2.响应拦截器---在获取数据之前对数据做一些加工
+        添加一个响应拦截器
+        axios.interceptors.respose.use(function(res){
+            在这里对返回的数据进行处理
+            return res
+        },funcrion(err){
+            处理响应的错误消息
+        });
+     -->
+
+
+
+    <!-- 引入vue.js库文件 -->
+    <script type="text/javascript" src="../JS/vue.js"></script>
+    <script type="text/javascript">
+
+        // axios.get('http://locahost:3000/adata').then(function(ret){
+        //  也可以利用console.log(ret) 查看里面具体的内容,会发现ret(是一个对象)里面有一个data属性,里面才是我们需要的值
+        //     console.log(ret.data);
+        // })
+
+        // --------------------------------------
+        // // get参数传递通过URL,方式一;delete同理
+        // axios.get('/adata?id=123')
+        //     .then(ret => {
+        //         console.log(ret.data)
+        //     })
+        // // get参数传递通过URL,方式二,变化在get里面的参数形式不同; delete同理
+        // axios.get('/adata/123')
+        //     .then(ret => {
+        //         console.log(ret.data)
+        //     })
+
+        // // get参数传递通过params,params是axios自带的属性; delete同理
+        // axios.get('/adata', {
+        //     params: {
+        //         id: 124
+        //     }
+        // }).then(ret => {
+        //     console.log(ret.data);
+        // })
+
+        // axios.delete('/adata', {
+        //     params: {
+        //         id: 124
+        //     }
+        // }).then(ret => {
+        //     console.log(ret.data);
+        // })
+
+        // --------------------------------------
+        // post传递参数---默认传递的是json格式的数据;put同理
+        // axios.post('/adata', {
+        //     uname:'tom',
+        //     pwd:124
+        // }).then(ret => {
+        //     console.log(ret.data)
+        // })
+        // post传递参数---表单形式;通过URLSearchParams传递参数(application/x-www-form-urlencoded),最终控制台显示提交数据是字符串格式中间以&隔开-->uname=mike&pwd=12345; put同理
+        // const params = new URLSearchParams();
+        // params.appead('uname', 'mike');
+        // params.appead('pwd', '12345');
+        // axios.post('/api/test', params).then(ret => {
+        //     console.log(ret.data)
+        // })
+        // axios.put('/adata/123', {
+        //     uname:'tom',
+        //     pwd:124
+        // }).then(ret => {
+        //     console.log(ret.data)
+        // })
+
+
+
+        // -----------------------------------
+        // // 全局配置
+        // // 配置请求头,对于跨域的话,请求头需要后台配置
+        // axios.defaults.headers['metoken'] = 'hello';
+        // // 配置请求的基准URL地址
+        // axios.defaults.baseURL = 'https://locahost:3000/';
+        // // 这里的get('就写具体的路径即可')
+        // axios.get('axios-json').then(function (ret) {
+        //     console.log(ret.data.uname);
+        // })
+
+        // ---------------------------------------
+        // // 1.请求拦截器
+        // // 添加一个请求拦截器
+        // axios.interceptors.request.use(function (config) {
+        //     // 得到URL地址
+        //     console.log(config.url);
+        //     // 在请求发出之前做一些配置
+        //     config.headers.mytoken = 'nihao';
+        //     return config;
+        // }, function (err) {
+        //     // 处理错误信息
+        //     console.log(err);
+        // });
+        // axios.get('axios-json').then(function (ret) {
+        //     console.log(ret);
+        // })
+
+        // // 2.响应拦截器---在获取数据之前对数据做一些加工
+        // // 添加一个响应拦截器
+        // axios.interceptors.response.use(function (res) {
+        //     console.log(res);
+        //     // 在这里对返回的数据进行处理
+        //     var data =res.data
+        //     return data;
+        // }, function (err) {
+        //     // 处理错误信息
+        //     console.log(err);
+        // });
+        // axios.get('axios-json').then(function (ret) {
+        //     console.log(ret);
+        // })
+    </script>
+</body>
+
+</html>

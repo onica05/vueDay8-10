@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>async/await基本用法</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- 概述 ：基本特性：1.async/await是ES7引入的新语法，可以更加方便的进行异步操作。其中async用于函数上，await用于async函数中-->
+    <!-- 语法结构：
+       async function queryData(id){
+        const ret = await axios.get('/data');
+        return ret;
+       }
+       queryData.then(ret => {
+        console.log(ret)
+       })
+     -->
+     <!-- 处理多个异步请求
+     -->
+    <!-- 基本用法：
+        
+     -->
+    <!-- 请求参数：
+       
+     -->
+
+    <!-- 响应结果 :
+      
+        
+    -->
+
+
+
+    <!-- 引入vue.js库文件 -->
+    <script type="text/javascript" src="../JS/vue.js"></script>
+    <script type="text/javascript">
+        // 全局配置
+        // 配置请求的基准URL地址
+        // axios.defaults.baseURL = 'https://locahost:3000/';
+
+
+        // // 这里的get('就写具体的路径即可')
+        // axios.get('adata').then(function (ret) {
+        //     console.log(ret.data);
+        // })
+        // // async与上面原始的axios对比
+        // async function queryData() {
+        //     const ret = await axios.get('adata');
+        //     return ret;
+        // }
+        // queryData().then(ret => {
+        //     console.log(ret)
+        // })
+
+        // // await后面跟的是一个promise对象
+        // async function queryData() {
+        //     const ret = await new Promise(function(resolve, reject){
+        //         setTimeout(function(){
+        //             resolve('nihao')
+        //         },1000)
+        //     })
+        //     return ret;
+        // }
+        // queryData().then(ret => {
+        //     console.log(ret)
+        // })
+
+        // // 处理多个异步操作
+        // async function queryData(){
+        //     var info = await axios.get('async1');
+        //     var ret = await axios.get('async2?info=' + info.data);
+        //     return ret.data
+        // }
+        // queryData().then(function(data){
+        //     console.log(data);
+        // })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch常用API</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- 概述 ：基本特性：1.功能更加强大，看作是升级版XHR；2.基于promise实现-->
+    <!-- 语法结构：
+        fetch(url).then(fn2)
+                  .then(fn3)
+                  ....
+                  .catch(fn)
+     -->
+    <!-- 基本用法：
+        fetch('/abc').then(data => {
+            return data.text();
+            text（）返回的是一个promise对象
+        }).then(ret => {
+            注意这里得到的是最终的数据
+            console.log(ret);
+        })
+     -->
+    <!-- 请求参数：
+        1.常用配置选项
+        method(string):HTTP请求方式--默认为get(get\post\put\delete)
+        body(string):HTTP的请求参数
+        headers(Object):HTTP的请求头，默认为{}
+     -->
+
+     <!-- 响应结果 :
+        响应结果格式:1.text():将返回结果处理成字符串类型
+                    2.json():返回结果和JSON.parse(reponseText)类似--------可以使用 JSON.parse() 方法将数据转换为 JavaScript 对象。
+        
+        这里面的输出ret是字符串形式
+        fetch('/abc').then(data =>{
+            return data.text()
+        }).then(ret =>{
+            console.log(ret)
+            要是想获取其中的uname只有利用json.parse(),例如:
+            var obj = JSON.parse(ret)
+            console.log(obj.uname,obj.age)
+        })
+
+        用这种形式的更加方便
+        fetch('/abc').then(data =>{
+                                        原来是这样的return data.text()
+            return data.json()
+        }).then(ret =>{
+            console.log(ret)
+        })
+         console.log(ret)这里面的ret是对象形式,所以可以用对象.来获取属性例如:ret.unmae
+        
+        
+    -->
+
+
+
+    <!-- 引入vue.js库文件 -->
+    <script type="text/javascript" src="../JS/vue.js"></script>
+    <script type="text/javascript">
+        //    fetch(url).then(function(data){
+        //     // text()属于fetch API的一部分，返回的是promise对象，作用：用于获取后台返回的数据
+        //     return data.text()
+        //    }),then(function(data){
+        //     console.log(data);
+        //    })
+
+        // ----------------------------------------------------------------
+
+
+        // // GET请求传参方式,写法一
+        // fetch('/abc?id=123').then(data => {
+        //     return data.text();
+        // }).then(ret => {
+        //     console.log(ret);
+        // })
+
+        // // GET请求传参方式,写法二;这里delete形式也是一样的，就是修改一下   method:'delete'
+        // fetch('/abc/123', {
+        //     method:'get'
+        // }).then(data => {
+        //     return data.text();
+        // }).then(ret => {
+        //     console.log(ret);
+        // })
+
+        // ----------------------------------------------------------------
+
+        // // post请求方式传参
+        // fetch('/books', {
+        //     method: 'post',
+        //     // 传递的具体参数，参数是键值对，每一对中间以&分隔
+        //     body: 'uname=mike&pwd=123',
+        //     headers: {
+        //         // 请求头内容类型是固定的
+        //         'Content-type': 'application/x-www-form-urlencoded',
+        //     }
+        // }).then(data => {
+        //     return data.text()
+        // }).then(ret => {
+        //     console.log(ret);
+        // })
+
+        // // post请求传递参数也可以是json格式的，在后台查看的时候也是以json格式展示
+        // // post请求方式传参
+        // fetch('/books', {
+        //     method: 'post',
+        //     // 传递的具体参数，josn格式传递，中间是以对象传递；  JSON.stringify({对象})表示将对象转换成字符串格式
+        //     body: JSON.stringify({
+        //         uname:'mike',
+        //         age:12
+        //     }),
+        //     headers: {
+        //         // 请求头内容类型是固定的
+        //         'Content-type': 'application/json',
+        //     }
+        // }).then(data => {
+        //     return data.text()
+        // }).then(ret => {
+        //     console.log(ret);
+        // })
+
+
+        // ----------------------------------------------------------------
+
+
+        // // post请求方式传参
+        // fetch('/books', {
+        //     method: 'put',
+        //     // 传递的具体参数，参数是键值对，每一对中间以&分隔
+        //     body: 'uname=mike&pwd=123',
+        //     headers: {
+        //         // 请求头内容类型是固定的
+        //         'Content-type': 'application/x-www-form-urlencoded',
+        //     }
+        // }).then(data => {
+        //     return data.text()
+        // }).then(ret => {
+        //     console.log(ret);
+        // })
+
+        // // put请求方式传递参数,也可以是json格式的
+        // fetch('/books/124',{
+        //     method:'put',
+        //     body:JSON.stringify({
+        //         uname:'mike',
+        //         age:12
+        //     }),
+        //     headers:{
+        //         'Content-type': 'application/json',
+        //     }
+        // }).then(data => {
+        //     return data.text()
+        // }).then(ret => {
+        //     console.log(ret);
+        // })
+    </script>
+</body>
+
+</html>

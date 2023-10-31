@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人信息案例</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .add {
+            width: 400px;
+            height: 247px;
+            border: 1px solid skyblue;
+            background-color: white;
+            margin: 350px auto;
+            padding: 20px;
+        }
+
+        .add-table {
+            width: 400px;
+            height: 140px;
+            border-collapse: collapse;
+        }
+
+        tbody tr,
+        td {
+            height: 35px;
+            padding-left: 10px;
+            border: 1px solid gainsboro;
+        }
+
+        button {
+            width: 50px;
+            height: 25px;
+            margin-top: 15px;
+            margin-right: 10px;
+        }
+
+        .lists {
+            margin-top: 15px;
+        }
+
+        .lists-table {
+            /* background-color: gold; */
+            width: 800px;
+            border-collapse: collapse;
+
+        }
+
+        .lists-table thead {
+            height: 35px;
+            text-align: center;
+            background-color: tan;
+        }
+
+        .lists-table th {
+            height: 35px;
+            border: 1px solid gainsboro;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 个人信息案例--增删改查功能 -->
+    <div id="app">
+        <h1>个人信息</h1>
+        <button class="addbtn" @click="addUser">新增</button>
+        <!-- 新增部分输入 -->
+        <!-- 想要通过按钮来操作的这部分显示与隐藏，通过v-show -->
+        <div class="bg" v-show="show" v-cloak>
+            <div class="add">
+                <h3>新增 | 修改</h3>
+                <table class="add-table">
+                    <tbody>
+                        <tr>
+                            <td>用户名</td>
+                            <td> <input type="text" v-model="inputList.userName"> </td>
+                        </tr>
+
+                        <tr>
+                            <td>邮箱</td>
+                            <td> <input type="text" v-model="inputList.email"> </td>
+                        </tr>
+
+                        <tr>
+                            <td>性别</td>
+                            <td>
+                                <input type="radio" name="sex" id="0" value="男" v-model="inputList.sex">
+                                <label> 男 </label>
+                                <input type="radio" name="sex" id="1" value="女" v-model="inputList.sex">
+                                <label> 女</label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>用户名</td>
+                            <td>
+                                <select name="" id="" v-model="inputList.region">
+                                    <option value="北京市">北京市</option>
+                                    <option value="上海市">上海市</option>
+                                    <option value="深圳市">深圳市</option>
+                                    <option value="重庆市">重庆市</option>
+                                    <option value="西安市">西安市</option>
+                                    <option value="南京市">南京市</option>
+                                    <option value="杭州市">杭州市</option>
+
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button @click="cancle(inputList)">取消</button>
+                <button @click="submit">保存</button>
+            </div>
+        </div>
+
+        <!-- 列表展示 -->
+        <div class="lists">
+            <table class="lists-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>性别</th>
+                        <th>省份</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr :key="item.index" v-for="(item ,index) in userList" v-cloak>
+                        <!-- 这里的id直接利用index,为了下面的新增，这里的id其实也表示个数，所以用Index合适 -->
+                        <td>{{index + 1}}</td>
+                        <td>{{item.userName}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.sex}}</td>
+                        <td>{{item.region}}</td>
+                        <td>
+                            <a href="#" @click.prevent="toEdilt(index)">修改</a>
+                            <span>|</span>
+                            <a href="#" @click.prevent="deleteUser(index)">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+
+    <!-- 引入vue.js库文件 -->
+    <script type="text/javascript" src="../JS/vue.js"></script>
+    <script type="text/javascript">
+        // 还是存在bug：1.点击修改，修改了内容之后，点击取消按钮没有效果
+        // [就是点击修改之后有问题，在修改同时userlist的数据也在发生变化，导致点击取消了内容也不是最初的内容，于此点击保存就没有问题]
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                // 区分编辑 新增
+                change: false,
+                // 控制中间编辑新增部分
+                show: false,
+                // 原始数据显示
+                userList: [{
+                    id: 1,
+                    userName: '小米',
+                    userAge: 19,
+                    email: '123456789@165com',
+                    sex: '男',
+                    region: '北京市',
+                }, {
+                    id: 2,
+                    userName: 'ssssss',
+                    userAge: 19,
+                    email: '123456789@165com',
+                    sex: '男',
+                    region: '北京市',
+                }],
+                // 新增数据
+                inputList: [{
+                    id: 1,
+                    userName: '',
+                    userAge: '',
+                    email: '',
+                    sex: '',
+                    region: '',
+                }]
+            },
+            methods: {
+                // 新增按钮操作
+                addUser: function () {
+                    console.log(111);
+                    this.show = true;
+                    // 清空表单
+                    this.inputList = {
+                        id: '',
+                        userName: '',
+                        userAge: '',
+                        email: '',
+                        sex: '',
+                        region: '',
+                    }
+                },
+                // 取消新增，点击取消按钮
+                cancle: function (inputList) {
+                    console.log(inputList);
+                    // this.userList[index] != this.inputList
+                    this.show = false;
+                },
+                // 保存新增，点击保存按钮
+                submit: function () {
+                    // 为了去区分是新增进来的元素还是修改之后的内容，用if判断。用change来区分，若是修改内容change = true,编辑内容change=false
+                    if (this.change == true) {
+                        // 修改内容
+                        console.log('修改');
+                    } else {
+                        // 新增内容
+                        console.log('新增');
+                        this.userList.push(this.inputList)
+                    }
+
+                    this.show = false;
+
+
+                },
+                // 修改操作，点击修改按钮，然后对应列表里面的信息出现对应的input里面
+                toEdilt: function (index) {
+                    console.log('修改');
+                    // console.log(this.userList[0]);
+                    this.show = true;
+                    // 这一步！！！ 本来是点击哪一行的修改就显示哪一行的内容出现在input，这里自己使用数组的特性-> []来获取内容
+                    this.inputList = this.userList[index];
+                    this.change = true;
+                },
+
+                // 删除操作
+                deleteUser: function (index) {
+                    // 这部删除操作直接删除对应的Index,而不是id。用id的话点击第一个的删除，删除的是第二个不对这点。所以利用Index,也对前面对的id列表是用index+1做的
+                    this.userList.splice(index, 1)
+
+                }
+            }
+
+
+
+        })
+
+
+
+
+    </script>
+</body>
+
+</html>
